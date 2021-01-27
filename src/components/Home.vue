@@ -177,10 +177,10 @@ export default {
       return labels
     },
     values(){
-      return [Math.round(this.tempResultC), Math.round(this.tempResultS2), Math.round(this.tempResultS3)];
+      return [this.tempResultC, this.tempResultS2, this.tempResultS3];
     },
     subLabels(){
-      return [Math.round(this.tempResultC), Math.round(this.tempResultS2), Math.round(this.tempResultS3)];
+      return [this.tempResultC, this.tempResultS2, this.tempResultS3];
     },
 
     calculateC() {
