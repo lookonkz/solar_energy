@@ -7,19 +7,19 @@
       <div class="col-12">
         <label class="time">
           <span class="time-span">Time(month): </span>
-          <select class="chooser-select">
-            <option class="chooser-option" value="January">January</option>
-            <option class="chooser-option" value="February">February</option>
-            <option class="chooser-option" value="March">March</option>
-            <option class="chooser-option" value="April">April</option>
-            <option class="chooser-option" value="May">May</option>
-            <option class="chooser-option" value="June">June</option>
-            <option class="chooser-option" value="July">July</option>
-            <option class="chooser-option" value="August">August</option>
-            <option class="chooser-option" value="September">September</option>
-            <option class="chooser-option" value="October">October</option>
-            <option class="chooser-option" value="November">November</option>
-            <option class="chooser-option" value="December">December</option>
+          <select class="chooser-select" v-model="month_" type="number">
+            <option class="chooser-option" value="15">January</option>
+            <option class="chooser-option" value="25">February</option>
+            <option class="chooser-option" value="45">March</option>
+            <option class="chooser-option" value="74">April</option>
+            <option class="chooser-option" value="86">May</option>
+            <option class="chooser-option" value="95">June</option>
+            <option class="chooser-option" value="93">July</option>
+            <option class="chooser-option" value="89">August</option>
+            <option class="chooser-option" value="78">September</option>
+            <option class="chooser-option" value="32">October</option>
+            <option class="chooser-option" value="15">November</option>
+            <option class="chooser-option" value="10">December</option>
           </select>
         </label>
       </div>
@@ -27,22 +27,17 @@
       <div class="col-12">
         <label class="input-ray pt-4">
           <span class="input-ray-span">Input rays(by Poisson):</span>
-          <input id="input-ray" type="range" min="0" max="2000" v-model="input_ray" step="1"  value="500">
-          <output>500</output>
+          <input id="input-ray" type="range" min="949" max="1220" v-model="input_ray" step="1" >
+          <output>{{ input_ray }}</output>
         </label>
       </div>
 
-      <div class="col-12">
-        <label class="S1 pt-4">
-          <span class="S1-span">S1(Solar panel): </span>
-          {{input_ray }} * 20.1% = {{resultS1}}
-        </label>
-      </div>
+
 
       <div class="col-12 pt-4">
         <label class="P1">
           <span class="P1-span">P1(DC cable diameter): </span>
-          <select id="chooser-select-p1" class="chooser-select" v-model="onChangeP1">
+          <select id="chooser-select-p1" class="chooser-select" type="number"  v-model="onChangeP1">
             <option class="chooser-option" value="2.5">2.5 mm</option>
             <option class="chooser-option" value="6">6 mm</option>
             <option class="chooser-option" value="4">4 mm</option>
@@ -53,7 +48,7 @@
       <div class="col-12">
         <label class="C pt-4">
           C(efficiency loss):
-          <input type="text" v-model="myTextC" readonly>%
+          <input v-model="myTextC" type="number"  readonly>%
         </label>
       </div>
 
@@ -74,7 +69,7 @@
         </label>
       </div>
 
-      <div class="col-12">
+      <div class="col-12 pb-4">
         <label class="P3 pt-4">
           <span class="P3-span">P3(AC cable diameter): </span>
           <select id="chooser-select-p3" type="number"  class="chooser-select" v-model="onChangeP3">
@@ -84,14 +79,21 @@
           </select>
         </label>
       </div>
-      <div class="col-12">
+
+      <div class="col-12 pt-5 p5">
         <label class="C pt-4">
-          S3 (efficiency loss): <input type="text" v-model="myTextS3" readonly>%
+          S3 (efficiency loss): <input type="number"  v-model="myTextS3" readonly>%
+        </label>
+      </div>
+
+      <div class="col-12 pt-5">
+        <label class="S1 pt-4">
+          <span class="S1-span">S1(Solar panel): </span>
+          ({{input_ray }} * {{month_}}%) * 20%  = {{input_rays()}}
         </label>
       </div>
 
       <div class="col-12">
-
         <label class="C pt-4">
           <div id="input-C">C(Solar inverter): {{calculateC()}}</div>
         </label>
@@ -139,7 +141,8 @@ export default {
   data() {
     return {
       resultS1: 0,
-      input_ray: 0,
+      month_: 15,
+      input_ray: 949,
       sunny_rate: 0,
       onChangeP1: 2.5,
       myTextC: 1.7,
@@ -160,11 +163,15 @@ export default {
   },
 
   mounted() {
-    this.input_ray = 500;
+    this.input_ray = 949;
   },
 
 
   methods:{
+    input_rays(){
+      this.resultS1 = (((this.input_ray * this.month_) / 100) * 0.201).toFixed(2);
+      return this.resultS1;
+    },
     labels(){
       let labels = ['S1', 'S2', 'S3']
       return labels
@@ -177,18 +184,19 @@ export default {
     },
 
     calculateC() {
-      let value = this.onChangeP1;
+      let value = Number(this.onChangeP1);
       let inputC  = ""
 
-      if(value === "2.5") {
-        this.tempResultC = (parseFloat(this.resultS1)* 88.5 * (100 - 1.7)).toFixed(3);
-        inputC = `C(Solar inverter): ${this.resultS1} * 88.5% * (100% - 1.7%) = ${this.tempResultC}`;
-      } else if (value === "6") {
-        this.tempResultC = (parseFloat(this.resultS1) * 88.5 * (100 - 0.8)).toFixed(3);
-        inputC = `C(Solar inverter): ${this.resultS1} * 88.5% * (100% - 0.8%)= ${this.tempResultC}`;
+      if(value === 2.5 || value === 4) {
+        this.tempResultC = (parseFloat(this.resultS1) * 0.885 * ((100 - 1.7) / 100)).toFixed(2);
+        inputC = `${this.resultS1} * 88.5% * (100% - 1.7%) = ${this.tempResultC}`;
+      }
+      else if (value === 6) {
+        this.tempResultC = (parseFloat(this.resultS1) * 0.885 * ((100 - 0.8) / 100)).toFixed(2);
+        inputC = `${this.resultS1} * 88.5% * (100% - 0.8%) = ${this.tempResultC}`;
       } else {
-        this.tempResultC = (parseFloat(this.resultS1) * 88.5).toFixed(3);
-        inputC = `C(Solar inverter): ${this.resultS1} * 88.5% = ${this.tempResultC}`;
+        this.tempResultC = (parseFloat(this.resultS1) * 0.885).toFixed(2);
+        inputC = `${this.resultS1} * 88.5% = ${this.tempResultC}`;
       }
 
       this.inputC = inputC;
@@ -196,18 +204,18 @@ export default {
     },
 
     calculateS2() {
-      let value = this.onChangeP2;
+      let value = Number(this.onChangeP2);
       let inputS2 = "";
 
-      if (value === "400") {
-        this.tempResultS2 = (this.tempResultC * 0.8 *(100 - 6.0)).toFixed(3);
-        inputS2 = `S2(Grid): ${this.tempResultC} * 0.8 * (100% - 6%) = ${this.tempResultS2}`;
-      } else if (value === "300") {
-        this.tempResultS2 = (this.tempResultC * 0.8 * (100 - 6.7)).toFixed(3);
-        inputS2 = `S2(Grid): ${this.tempResultC} * 0.8 *(100% - 6.7%)= ${this.tempResultS2}`;
+      if (value === 400) {
+        this.tempResultS2 = (this.tempResultC * 0.80 * ((100 - 6.0) / 100)).toFixed(2);
+        inputS2 = `${this.tempResultC} * 80% * (100% - 6%) = ${this.tempResultS2}`;
+      } else if (value === 300) {
+        this.tempResultS2 = (this.tempResultC * 0.8 * ((100 - 6.7) / 100)).toFixed(2);
+        inputS2 = `${this.tempResultC} * 80% * (100% - 6.7%)= ${this.tempResultS2}`;
       } else {
-        this.tempResultS2 = (this.tempResultC * 0.8 * (100 - 7.0)).toFixed(3);
-        inputS2 = `S2(Grid): ${this.tempResultC} * 0.8 *(100% - 7%)= ${this.tempResultS2}`;
+        this.tempResultS2 = (this.tempResultC * 0.8 * ((100 - 7.0) / 100)).toFixed(2);
+        inputS2 = `${this.tempResultC} * 80% * (100% - 7%)= ${this.tempResultS2}`;
       }
 
       this.inputS2 = inputS2;
@@ -218,15 +226,15 @@ export default {
       let value = this.onChangeP3;
       let inputS3 = "";
 
-      if(value === "16") {
-        this.tempResultS3 = (this.tempResultC * 0.2 * (100 - 16)).toFixed(3);
-        inputS3 = `S3(Solar accumulator): ${this.tempResultC} * 0.2 * (100% - 16%) = ${this.tempResultS3}`
-      } else if (value === "25") {
-        this.tempResultS3 = (this.tempResultC * 0.2 * (100 - 18)).toFixed(3);
-        inputS3 = `S3(Solar accumulator): ${this.tempResultC} * 0.2 * (100% - 18%) = ${this.tempResultS3}`
+      if(value === 16) {
+        this.tempResultS3 = (this.tempResultC * 0.20 * ((100 - 16) / 100)).toFixed(2);
+        inputS3 = `${this.tempResultC} * 20% * (100% - 16%) = ${this.tempResultS3}`
+      } else if (value === 25) {
+        this.tempResultS3 = (this.tempResultC * 0.20 * ((100 - 18) / 100)).toFixed(2);
+        inputS3 = `${this.tempResultC} * 20% * (100% - 18%) = ${this.tempResultS3}`
       } else {
-        this.tempResultS3 = (this.tempResultC * 0.2 * (100 - 15)).toFixed(3);
-        inputS3 = `S3(Solar accumulator): ${this.tempResultC} * 0.2 * (100% - 15%) = ${this.tempResultS3}`
+        this.tempResultS3 = (this.tempResultC * 0.20 * ((100 - 15) / 100)).toFixed(2);
+        inputS3 = `${this.tempResultC} * 20% * (100% - 15%) = ${this.tempResultS3}`
       }
 
       this.inputS3 = inputS3;
@@ -236,42 +244,42 @@ export default {
 
   watch: {
     onChangeP1(){
-      let value = this.onChangeP1;
-      if (value === "2.5") {
-        this.myTextC = "1.7";
-      } else if (value === "6") {
-        this.myTextC = "0.8";
-      } else {
-        this.myTextC = "88.5";
+      let value = Number(this.onChangeP1);
+      if (value === 2.5 || value === 4) {
+        this.myTextC = 1.7;
+      }
+      else if (value === 6) {
+        this.myTextC = 0.8;
+      }
+      else {
+        this.myTextC = 88.5;
       }
     },
 
     onChangeP2(){
-      let value = this.onChangeP2;
-      if (value === "400") {
-        this.myTextS2 = "6.0";
-      } else if (value === "300") {
-        this.myTextS2 = "6.7";
+      let value = Number(this.onChangeP2);
+      if (value === 400) {
+        this.myTextS2 = 6.0;
+      } else if (value === 300) {
+        this.myTextS2 = 6.7;
       } else {
-        this.myTextS2 = "7.0";
+        this.myTextS2 = 7.0;
       }
     },
 
     onChangeP3(){
       let value = this.onChangeP3;
-      if(value === "16"){
-        this.myTextS3 = "16.0";
-      } else if (value === "25"){
-        this.myTextS3 = "18.0";
+      if(value === 16){
+        this.myTextS3 = 16.0;
+      } else if (value === 25){
+        this.myTextS3 = 18.0;
       } else {
-        this.myTextS3 = "15.0";
+        this.myTextS3 = 15.0;
       }
 
     },
 
-    input_ray(){
-      this.resultS1 = this.input_ray * 20.1 / 100
-    }
+
   },
 }
 </script>
