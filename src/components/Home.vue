@@ -268,7 +268,7 @@ export default {
     },
 
     onChangeP3(){
-      let value = this.onChangeP3;
+      let value = Number(this.onChangeP3);
       if(value === 16){
         this.myTextS3 = 16.0;
       } else if (value === 25){
