@@ -223,7 +223,7 @@ export default {
     },
 
     calculateS3(){
-      let value = this.onChangeP3;
+      let value = Number(this.onChangeP3);
       let inputS3 = "";
 
       if(value === 16) {
