@@ -1,117 +1,118 @@
 <template>
-  <div class="main-page">
-    <div class="form row">
-      <div class="col-12">
-        <h2 id="title" class="title" style="font-size: xx-large; color: darkcyan;text-align: center;">SOLAR ENERGY</h2>
-      </div>
-      <div class="col-12">
-        <label class="time">
-          <span class="time-span">Time(month): </span>
-          <select class="chooser-select" v-model="month_" type="number">
-            <option class="chooser-option" value="15">January</option>
-            <option class="chooser-option" value="25">February</option>
-            <option class="chooser-option" value="45">March</option>
-            <option class="chooser-option" value="74">April</option>
-            <option class="chooser-option" value="86">May</option>
-            <option class="chooser-option" value="95">June</option>
-            <option class="chooser-option" value="93">July</option>
-            <option class="chooser-option" value="89">August</option>
-            <option class="chooser-option" value="78">September</option>
-            <option class="chooser-option" value="32">October</option>
-            <option class="chooser-option" value="15">November</option>
-            <option class="chooser-option" value="10">December</option>
-          </select>
-        </label>
-      </div>
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-12 p-4"></div>
+      <div class="col-5">
+        <div class="row">
+          <div class="col-12">
+            <h2 id="title" class="title" style="font-size: xx-large; color: darkcyan;text-align: center;">SOLAR ENERGY</h2>
+          </div>
 
-      <div class="col-12">
-        <label class="input-ray pt-4">
-          <span class="input-ray-span">Input rays(by Poisson):</span>
-          <input id="input-ray" type="range" min="949" max="1220" v-model="input_ray" step="1" >
-          <output>{{ input_ray }}</output>
-        </label>
-      </div>
+          <div class="col-12">
+            <label class="input-ray pt-4">
+              <span class="input-ray-span">Input rays(by Poisson):</span>
+              <input id="input-ray" type="range" min="949" max="1220" v-model="input_ray" step="1" >
+              <output>{{ input_ray }}</output>
+            </label>
+          </div>
 
+          <div class="col-12">
+            <label class="time">
+              <span class="time-span">Time(month): </span>
+              <select class="chooser-select" v-model="month_value" type="number">
+                <option class="chooser-option" value="1">January</option>
+                <option class="chooser-option" value="2">February</option>
+                <option class="chooser-option" value="3">March</option>
+                <option class="chooser-option" value="4">April</option>
+                <option class="chooser-option" value="5">May</option>
+                <option class="chooser-option" value="6">June</option>
+                <option class="chooser-option" value="7">July</option>
+                <option class="chooser-option" value="8">August</option>
+                <option class="chooser-option" value="9">September</option>
+                <option class="chooser-option" value="10">October</option>
+                <option class="chooser-option" value="11">November</option>
+                <option class="chooser-option" value="12">December</option>
+              </select>
+            </label>
+          </div>
 
+          <div class="col-12">
+            <label class="P1">
+              <span class="P1-span">P1(DC cable diameter): </span>
+              <select id="chooser-select-p1" class="chooser-select" type="number"  v-model="onChangeP1">
+                <option class="chooser-option" value="2.5">2.5 mm</option>
+                <option class="chooser-option" value="6">6 mm</option>
+                <option class="chooser-option" value="4">4 mm</option>
+              </select>
+            </label>
+          </div>
 
-      <div class="col-12 pt-4">
-        <label class="P1">
-          <span class="P1-span">P1(DC cable diameter): </span>
-          <select id="chooser-select-p1" class="chooser-select" type="number"  v-model="onChangeP1">
-            <option class="chooser-option" value="2.5">2.5 mm</option>
-            <option class="chooser-option" value="6">6 mm</option>
-            <option class="chooser-option" value="4">4 mm</option>
-          </select>
-        </label>
-      </div>
+          <div class="col-12">
+            <label class="C pt-4">
+              C(efficiency loss):
+              <input v-model="myTextC" type="number"  readonly>%
+            </label>
+          </div>
 
-      <div class="col-12">
-        <label class="C pt-4">
-          C(efficiency loss):
-          <input v-model="myTextC" type="number"  readonly>%
-        </label>
-      </div>
+          <div class="col-12">
+            <label class="P2">
+              <span class="P2-span" >P2(AC cable diameter): </span>
+              <select id="chooser-select-p2" class="chooser-select" type="number" v-model="onChangeP2">
+                <option class="chooser-option" value="400">400 mm2</option>
+                <option class="chooser-option" value="300">300 mm2</option>
+                <option class="chooser-option" value="240">240 mm2</option>
+              </select>
+            </label>
+          </div>
 
-      <div class="col-12">
-        <label class="P2 pt-4">
-          <span class="P2-span" >P2(AC cable diameter): </span>
-          <select id="chooser-select-p2" class="chooser-select" type="number" v-model="onChangeP2">
-            <option class="chooser-option" value="400">400 mm2</option>
-            <option class="chooser-option" value="300">300 mm2</option>
-            <option class="chooser-option" value="240">240 mm2</option>
-          </select>
-        </label>
-      </div>
+          <div class="col-12">
+            <label class="C">
+              S2 (efficiency loss): <input type="number" id="myTextS2" v-model="myTextS2" readonly>%
+            </label>
+          </div>
 
-      <div class="col-12">
-        <label class="C pt-4">
-          S2 (efficiency loss): <input type="number" id="myTextS2" v-model="myTextS2" readonly>%
-        </label>
-      </div>
+          <div class="col-12">
+            <label class="P3">
+              <span class="P3-span">P3(AC cable diameter): </span>
+              <select id="chooser-select-p3" type="number"  class="chooser-select" v-model="onChangeP3">
+                <option class="chooser-option" value="16">16 mm</option>
+                <option class="chooser-option" value="25">25 mm</option>
+                <option class="chooser-option" value="35">35 mm</option>
+              </select>
+            </label>
+          </div>
 
-      <div class="col-12 pb-4">
-        <label class="P3 pt-4">
-          <span class="P3-span">P3(AC cable diameter): </span>
-          <select id="chooser-select-p3" type="number"  class="chooser-select" v-model="onChangeP3">
-            <option class="chooser-option" value="16">16 mm</option>
-            <option class="chooser-option" value="25">25 mm</option>
-            <option class="chooser-option" value="35">35 mm</option>
-          </select>
-        </label>
-      </div>
+          <div class="col-12">
+            <label class="C pt-4">
+              S3 (efficiency loss): <input type="number"  v-model="myTextS3" readonly>%
+            </label>
+          </div>
 
-      <div class="col-12 pt-5 p5">
-        <label class="C pt-4">
-          S3 (efficiency loss): <input type="number"  v-model="myTextS3" readonly>%
-        </label>
-      </div>
+          <div class="col-12">
+            <label class="S1">
+              <span class="S1-span">S1(Solar panel): </span>
+              ({{input_ray }} * {{month_}}%) * 20%  = {{input_rays()}}
+            </label>
+          </div>
 
-      <div class="col-12 pt-5">
-        <label class="S1 pt-4">
-          <span class="S1-span">S1(Solar panel): </span>
-          ({{input_ray }} * {{month_}}%) * 20%  = {{input_rays()}}
-        </label>
+          <div class="col-12">
+            <label class="C pt-4">
+              <div id="input-C">C(Solar inverter): {{calculateC()}}</div>
+            </label>
+          </div>
+          <div class="col-12">
+            <label class="S2">
+              <div id="input-S2">S2(Grid): {{calculateS2()}}</div>
+            </label>
+          </div>
+          <div class="col-12">
+            <label class="S3">
+              <div id="input-S3">S3(Solar accumulator): {{calculateS3()}}</div>
+            </label>
+          </div>
+        </div>
       </div>
-
-      <div class="col-12">
-        <label class="C pt-4">
-          <div id="input-C">C(Solar inverter): {{calculateC()}}</div>
-        </label>
-      </div>
-      <div class="col-12">
-        <label class="S2 pt-4">
-          <div id="input-S2">S2(Grid): {{calculateS2()}}</div>
-        </label>
-      </div>
-      <div class="col-12">
-        <label class="S3 pt-4">
-          <div id="input-S3">S3(Solar accumulator): {{calculateS3()}}</div>
-        </label>
-      </div>
-    </div>
-    <div class="container">
-      <div class="row">
-        <div class="col-12">
+      <div class="col-6">
           <vue-funnel-graph :width="800" :height="300"
                             :labels="labels()"
                             :values="values()"
@@ -122,7 +123,6 @@
                             :animated="true"
                             :display-percentage="true"
           ></vue-funnel-graph>
-        </div>
       </div>
     </div>
 
@@ -135,12 +135,13 @@ import { VueFunnelGraph } from 'vue-funnel-graph-js';
 export default {
   name: 'Home',
   components: {
-    VueFunnelGraph,
+    VueFunnelGraph
   },
 
   data() {
     return {
       resultS1: 0,
+      month_value: 1,
       month_: 15,
       input_ray: 949,
       sunny_rate: 0,
@@ -156,6 +157,20 @@ export default {
       inputC: 0.0,
       inputS2: 0.0,
       inputS3: 0.0,
+      months: [
+          {id: 1, name: 'January', input_ray: 1170, month_: 15},
+          {id: 2, name: 'February', input_ray: 1183, month_: 25},
+          {id: 3, name: 'March', input_ray: 1174, month_: 45},
+          {id: 4, name: 'April', input_ray: 1164, month_: 74},
+          {id: 5, name: 'May', input_ray: 1172, month_: 86},
+          {id: 6, name: 'June', input_ray: 1165, month_: 95},
+          {id: 7, name: 'July', input_ray: 1167, month_: 93},
+          {id: 8, name: 'August', input_ray: 1159, month_: 89},
+          {id: 9, name: 'September', input_ray: 1169, month_: 78},
+          {id: 10, name: 'October', input_ray: 1167, month_: 32},
+          {id: 11, name: 'November', input_ray: 1170, month_: 15},
+          {id: 12, name: 'December', input_ray: 1171, month_: 10}
+      ],
       direction: 'horizontal',
       gradientDirection: 'horizontal',
 
@@ -173,14 +188,14 @@ export default {
       return this.resultS1;
     },
     labels(){
-      let labels = ['S1', 'S2', 'S3']
+      let labels = ['S1', 'C', 'S2', 'S3']
       return labels
     },
     values(){
-      return [this.tempResultC, this.tempResultS2, this.tempResultS3];
+      return [this.input_rays(), this.tempResultC, this.tempResultS2, this.tempResultS3];
     },
     subLabels(){
-      return [this.tempResultC, this.tempResultS2, this.tempResultS3];
+      return [this.input_rays(), this.tempResultC, this.tempResultS2, this.tempResultS3];
     },
 
     calculateC() {
@@ -243,6 +258,12 @@ export default {
   },
 
   watch: {
+    month_value() {
+      let month = this.months.filter(item => Number(this.month_value) === item.id)[0];
+      this.month_ = month.month_;
+      this.input_ray = month.input_ray;
+    },
+
     onChangeP1(){
       let value = Number(this.onChangeP1);
       if (value === 2.5 || value === 4) {
